@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pulsar-manager-svc
+  namespace: sn-pulsar
+spec:
+  ports:
+    - name: server
+      port: 9527
+      protocol: TCP
+      targetPort: 9527
+  selector:
+    app: pulsar
+    component: pulsar-manager
+    release: pulsar
+  type: ClusterIP

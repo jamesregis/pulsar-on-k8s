@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulsar-manager
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pulsar
+      component: pulsar-manager
+      release: pulsar
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: pulsar
+        cluster: pulsar
+        component: pulsar-manager
+        release: pulsar
+    spec:
+      containers:
+      - env:
+        - name: PULSAR_CLUSTER
+          value: pulsar
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: PULSAR_MANAGER_ADMIN_USER
+              name: pulsar-manager-secret
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: PULSAR_MANAGER_ADMIN_PASSWORD
+              name: pulsar-manager-secret
+        - name: PULSAR_MANAGER_OPTS
+          value: $(PULSAR_MANAGER_OPTS) -Dlog4j2.formatMsgNoLookups=true
+        envFrom:
+        - configMapRef:
+            name: pulsar-manager
+        image: apachepulsar/pulsar-manager:v0.3.0
+        imagePullPolicy: IfNotPresent
+        name: pulsar-manager
+        ports:
+        - containerPort: 9527
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 250Mi
+        volumeMounts:
+#        - mountPath: /data
+#          name: pulsar-manager-data
+#        - mountPath: /pulsar-manager/startup.sh
+#          name: startup-sh-volume
+#          subPath: startup.sh
+        - mountPath: /pulsar-manager/pulsar-manager/application.properties
+          name: pulsar-manager-application-properties
+          subPath: application.properties
+      volumes:
+#      - emptyDir: {}
+#        name: pulsar-manager-data
+#      - configMap:
+#          defaultMode: 420
+#          name: startup-sh-cm
+#        name: startup-sh-volume
+      - name: pulsar-manager-application-properties
+        secret:
+          secretName: pulsar-manager-application-properties
+          
+          
+        

@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  DRIVER_CLASS_NAME: org.postgresql.Driver
+  LOG_LEVEL: DEBUG
+  REDIRECT_HOST: http://127.0.0.1
+  REDIRECT_PORT: "9527"
+  URL: jdbc:postgresql://pulsar-postgres-svc:5432/pulsar_manager
+  USERNAME: pulsar
+  PASSWORD: AhCooy7aGhahh8raivoakaeng 
+kind: ConfigMap
+metadata:
+  name: pulsar-manager

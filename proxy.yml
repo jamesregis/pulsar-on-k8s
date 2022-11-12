@@ -1,0 +1,22 @@
+---
+apiVersion: pulsar.streamnative.io/v1alpha1
+kind: PulsarProxy
+metadata:
+    name: propxy
+    namespace: sn-pulsar
+spec:
+    brokerAddress: broker-broker-headless
+    dnsNames: []
+    #webSocketServiceEnabled: true
+    image: streamnative/pulsar:2.9.2.15
+    config:
+      tls:
+        enabled: false 
+    issuerRef:
+      name: ""
+    pod:
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+    replicas: 1

@@ -1,0 +1,37 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pulsar-db-init
+spec:
+  template:
+    metadata:
+      name: pulsar-manager-db-init-job
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: postgresql-init
+        image: jamesregis/postgres-client
+        command:
+          - "bin/sh"
+          - "-c"
+          - "env | grep -E '(POST|PGPA)'; curl https://raw.githubusercontent.com/apache/pulsar-manager/master/src/main/resources/META-INF/sql/postgresql-schema.sql > /tmp/postgresql-schema.sql; PGPASSWORD=$(PGPASSWORD) psql -U $POSTGRES_USER -d $POSTGRES_DB --host=pulsar-postgres-svc --file=/tmp/postgresql-schema.sql"
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: pulsar-manager-postgres-secret
+              key: POSTGRES_USER
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pulsar-manager-postgres-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: pulsar-manager-postgres-secret
+              key: POSTGRES_DB
+      restartPolicy: Never
+

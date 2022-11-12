@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pulsar-pulsar-manager
+  namespace: sn-pulsar
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pulsar
+      component: pulsar-manager
+      release: pulsar
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pulsar
+        cluster: pulsar
+        component: pulsar-manager
+        release: pulsar
+    spec:
+      containers:
+      - image: apachepulsar/pulsar-manager:v0.3.0
+        name: pulsar-pulsar-manager
+        ports:
+        - name: port9527
+          containerPort: 9527
+          protocol: TCP
+        - name: port7750
+          containerPort: 7750
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 250Mi
+        env:
+          - name: SPRING_CONFIGURATION_FILE
+            value: "/pulsar-manager/pulsar-manager/application.properties"
+
