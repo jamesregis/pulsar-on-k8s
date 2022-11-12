@@ -41,7 +41,35 @@ Don't forget to modify the POSGRESQL (user/password) in the following files:
 
 `vim pulsar-manager/pulsar-manager-secret.yml` <-- password and username should be `base64` encoded string.
 
-### Create postgres secret
+### Ingress
+
+Change ingress in
+
+`vim pulsar-manager/pulsar-manager-ingress.yml` 
+
+Your pulsar-manager instance will be reachable on `spec.rules.host` url.
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pulsar-manager-ingress
+  namespace: sn-pulsar
+spec:
+  rules:
+  - host: pulsar-manager.my-domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: pulsar-manager-svc
+            port: 
+              number: 9527
+```
+
+### Create postgresql secret
 
 `kubectl apply -f pulsar-manager-postgres-secret -n sn-pulsar`
 
@@ -56,6 +84,8 @@ Don't forget to modify the POSGRESQL (user/password) in the following files:
 ### Install pulsar-manager
 
 `kubectl apply pulsar-manager/pulsar-manager*.yml -n sn-pulsar`
+
+
 ###  Check that everything is up and running
 ```bash
 [root@k8s-node01 streamnative]# kubectl get pods -n sn-pulsar
@@ -74,3 +104,5 @@ zookeeper-zk-0                            1/1     Running     0          47h
 zookeeper-zk-1                            1/1     Running     0          2d
 zookeeper-zk-2                            1/1     Running     0          33d
 ```
+
+
