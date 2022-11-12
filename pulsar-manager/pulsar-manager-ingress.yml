@@ -5,7 +5,7 @@ metadata:
   namespace: sn-pulsar
 spec:
   rules:
-  - host: pulsar-manager.gcloud.bara.ca.dev
+  - host: pulsar-manager.my-domain
     http:
       paths:
       - path: /
