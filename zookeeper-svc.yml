@@ -1,74 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  creationTimestamp: "2022-07-20T02:40:36Z"
   labels:
     cloud.streamnative.io/app: pulsar
     cloud.streamnative.io/cluster: zookeeper
     cloud.streamnative.io/component: zookeeper
-  managedFields:
-  - apiVersion: v1
-    fieldsType: FieldsV1
-    fieldsV1:
-      f:metadata:
-        f:labels:
-          .: {}
-          f:cloud.streamnative.io/app: {}
-          f:cloud.streamnative.io/cluster: {}
-          f:cloud.streamnative.io/component: {}
-        f:ownerReferences:
-          .: {}
-          k:{"uid":"5f073a4d-9977-4ca8-b69e-b8f2a706fc33"}:
-            .: {}
-            f:apiVersion: {}
-            f:blockOwnerDeletion: {}
-            f:controller: {}
-            f:kind: {}
-            f:name: {}
-            f:uid: {}
-      f:spec:
-        f:ports:
-          .: {}
-          k:{"port":2181,"protocol":"TCP"}:
-            .: {}
-            f:name: {}
-            f:port: {}
-            f:protocol: {}
-            f:targetPort: {}
-          k:{"port":8000,"protocol":"TCP"}:
-            .: {}
-            f:name: {}
-            f:port: {}
-            f:protocol: {}
-            f:targetPort: {}
-          k:{"port":9990,"protocol":"TCP"}:
-            .: {}
-            f:name: {}
-            f:port: {}
-            f:protocol: {}
-            f:targetPort: {}
-        f:selector:
-          .: {}
-          f:cloud.streamnative.io/app: {}
-          f:cloud.streamnative.io/cluster: {}
-          f:cloud.streamnative.io/component: {}
-        f:sessionAffinity: {}
-        f:type: {}
-    manager: manager
-    operation: Update
-    time: "2022-07-20T02:40:42Z"
   name: zookeeper
   namespace: pulsar
-  ownerReferences:
-  - apiVersion: zookeeper.streamnative.io/v1alpha1
-    blockOwnerDeletion: true
-    controller: true
-    kind: ZooKeeperCluster
-    name: zookeeper
-    uid: 5f073a4d-9977-4ca8-b69e-b8f2a706fc33
-  resourceVersion: "252088312"
-  selfLink: /api/v1/namespaces/pulsar/services/zookeeper-zk
-  uid: 0c0a5a5a-1726-4e98-a79a-2de68f8e471b
 spec:
   ports:
   - name: tcp-client
