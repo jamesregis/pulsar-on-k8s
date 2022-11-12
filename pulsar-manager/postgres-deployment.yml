@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-pulsar-manager
+  labels:
+    app: postgres
+    service: pulsar-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+      service: pulsar-manager
+  template:
+    metadata:
+      labels:
+        app: postgres
+        service: pulsar-manager
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pulsar-manager-postgres-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pulsar-manager-postgres-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: pulsar-manager-postgres-secret
+                  key: POSTGRES_DB
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: "postgres-vol"
+      volumes:
+        - name: postgres-vol
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+
