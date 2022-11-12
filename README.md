@@ -37,9 +37,9 @@ zookeeper-zk-2                            1/1     Running     0          33d\
 ### Change user/password for PostgreSQL
 Don't forget to modify the POSGRESQL (user/password) in the following files:
 
-`pulsar-manager/pulsar-manager-application-properties-secret.yml`
+`vim pulsar-manager/pulsar-manager-application-properties-secret.yml`
 
-`pulsar-manager/pulsar-manager-secret.yml` <-- password and username should be `base64` encoded string.`
+`vim pulsar-manager/pulsar-manager-secret.yml` <-- password and username should be `base64` encoded string.
 
 ### Create postgres secret
 
